@@ -3,23 +3,40 @@
 <body style="margin:0; padding: 0;">
 <script>
     enchant(); // initialize
+window.onload = function(){
     var game = new Game(320, 320); // game stage
     game.preload('images/chara1.png'); // preload image
-    game.fps = 20;
+    game.fps = 30;
 
     game.onload = function(){
         var bear = new Sprite(32, 32);
         bear.image = game.assets['images/chara1.png'];
         game.rootScene.addChild(bear);
-        bear.frame = [6, 6, 7, 7];   // select sprite frame
+        bear.frame = [5, 6, 7, 8];   // select sprite frame
+
+        // 熊さんがタッチされた時のイベント
+        bear.addEventListener('touchstart', function() {
+          //死ぬ
+          game.rootScene.removeChild(bear);
+        });
+
+        // 毎フレーム確認するイベント
+        bear.addEventListener('enterframe', function(e) {
+        	//書くキーが押されていたら動く
+	        if (game.input.left) this.x -= 1.0;
+	        if (game.input.right) this.x += 1.0;
+	        if (game.input.up) this.y -= 1.0;
+	        if (game.input.down) this.y += 1.0;
+	    });
         
-        bear.tl.moveBy(288, 0, 90)   // move right
-            .scaleTo(-1, 1, 10)      // turn left
-            .moveBy(-288, 0, 90)     // move left
-            .scaleTo(1, 1, 10)       // turn right
-            .loop();                 // loop it
+        //bear.tl.moveBy(288, 0, 90)   // move right
+        //    .scaleTo(-1, 1, 10)      // turn left
+        //    .moveBy(-288, 0, 90)     // move left
+        //    .scaleTo(1, 1, 10)       // turn right
+        //   .loop();                 // loop it
     };
 
     game.start(); // start your game!
+};
 </script>
 </body>
